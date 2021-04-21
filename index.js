@@ -7,8 +7,9 @@ let main = new Vue({
     size: 8,
 		cells: [],
     ms: 0,
-    p: 0.6,
+    p: 0.06,
     weight: [[1, 1, 1], [1, 0, 1], [1, 1, 1]],
+    threshold: [2, 3, 4],
     frames: 0,
     time: 0,
 	},
@@ -37,9 +38,9 @@ let main = new Vue({
       let neighbor = this.getNeighborCount()
       this.iter2d(neighbor, (n, y, x) => {
         let v = this.cells[y][x]
-        if (v && (n > 3 || n < 2))
+        if (v && (n >= this.threshold[2] || n < this.threshold[0]))
           changes.push({ y, x, v: 0 })
-        else if (!v && n === 3)
+        else if (!v && (n >= this.threshold[1] && n < this.threshold[2]))
           changes.push({ y, x, v: 1 })
       })
       this.drawCells(changes)
